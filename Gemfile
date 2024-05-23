@@ -7,3 +7,5 @@ gem "sinatra"
 gem "rackup"
 
 gem "puma"
+
+gem "faraday"

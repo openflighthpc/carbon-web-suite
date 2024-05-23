@@ -2,6 +2,11 @@ GEM
   remote: https://rubygems.org/
   specs:
     base64 (0.2.0)
+    faraday (2.8.1)
+      base64
+      faraday-net_http (>= 2.0, < 3.1)
+      ruby2_keywords (>= 0.0.4)
+    faraday-net_http (3.0.2)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
     nio4r (2.7.3)
@@ -27,6 +32,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  faraday
   puma
   rackup
   sinatra
