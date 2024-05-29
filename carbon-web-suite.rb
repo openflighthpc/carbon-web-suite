@@ -2,7 +2,7 @@ require 'sinatra'
 require 'faraday'
 require 'yaml'
 
-require 'lib/emission_conversion'
+require_relative 'lib/emission_conversion'
 
 config = YAML.load_file(File.join(__dir__, 'etc/config.yml')) || {}
 
