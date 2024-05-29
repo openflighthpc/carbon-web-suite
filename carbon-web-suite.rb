@@ -2,6 +2,8 @@ require 'sinatra'
 require 'faraday'
 require 'yaml'
 
+require 'lib/emission_conversion'
+
 config = YAML.load_file(File.join(__dir__, 'etc/config.yml')) || {}
 
 HUNTER_DIR = config['hunter_dir'] || '/opt/flight/opt/hunter/'
@@ -58,5 +60,17 @@ Dir.each_child(parsed_dir) do |file|
 end
 
 get '/' do
-  erb :home, :locals => {:nodes => nodes}
+  total_max = nodes.map { |node| carbon_for_load(node, 100) }.sum
+  year_emissions = (total_max * 8.76).round(2)
+  emission_conversions = {}.tap do |ec|
+    ec[:driving] = (year_emissions * EmissionConversion::DRIVE).floor
+    ec[:big_mac] = (year_emissions * EmissionConversion::BIG_MAC).floor
+    ec[:mcplant] = (year_emissions * EmissionConversion::MCPLANT).floor
+    ec[:flight] = (year_emissions * EmissionConversion::FLIGHT).floor
+    ec[:netflix] = (year_emissions * EmissionConversion::NETFLIX).floor
+  end
+
+  erb :home, :locals => {:nodes => nodes, :ec => emission_conversions}
+end
+
 end
