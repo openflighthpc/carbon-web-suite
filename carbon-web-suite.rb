@@ -73,4 +73,4 @@ get '/' do
   erb :home, :locals => {:nodes => nodes, :ec => emission_conversions}
 end
 
-end
+
