@@ -6,12 +6,21 @@ require_relative 'lib/emission_conversion'
 
 config = YAML.load_file(File.join(__dir__, 'etc/config.yml')) || {}
 
+set :bind, '0.0.0.0'
+set :port, config['port'] || 80
+
 HUNTER_DIR = config['hunter_dir'] || '/opt/flight/opt/hunter/'
 BOAVIZTA_URL = config['boavizta_url'] || 'https://api.boavizta.openflighthpc.org'
+LEADERBOARD_URL = config['leaderboard_url'] || 'https://leaderboard.openflighthpc.org'
 LOCATION = config['location'] || 'GBR'
+AUTH_TOKEN = ''
 
 def boavizta
   @boavizta ||= Faraday.new(BOAVIZTA_URL)
+end
+
+def leaderboard
+  @leaderboard ||= Faraday.new(LEADERBOARD_URL)
 end
 
 def carbon_for_load(node, cpu_load)
@@ -47,6 +56,31 @@ def carbon_for_load(node, cpu_load)
   JSON.parse(response.body).dig(*%w[impacts gwp use value]) * 1000
 end
 
+def send_data(node)
+  response = leaderboard.post('/add-record') do |req|
+    req.headers[:content_type] = 'application/json'
+    req.headers[:Authorization] = AUTH_TOKEN
+    req.body = JSON.generate(
+      {
+        "device_id": "matt_test_uuid",
+        "platform": node.platform,
+        "cpus": node.cpus.units,
+        "cores_per_cpu": node.cpus.cores_per_cpu,
+        "cpu_name": node.cpus.cpu_data.CPU0.model,
+        "ram_units": node.ram.units,
+        "ram_capacity_per_unit": node.ram.capacity_per_unit,
+        "disk": node.disk,
+        "instance_type": "",
+        "current_load": 50,
+        "location": LOCATION,
+        "tags": []
+      }
+    )
+  end
+
+  response
+end
+
 parsed_dir = File.join(HUNTER_DIR, '/var/parsed')
 
 raise "The specified directory '#{HUNTER_DIR}' has no associated parsed nodes." if !File.directory?(parsed_dir)
@@ -73,4 +107,7 @@ get '/' do
   erb :home, :locals => {:nodes => nodes, :ec => emission_conversions}
 end
 
+get '/send-data' do
+  erb :send_data, :locals => {:response => send_data(nodes.first)}
+end
 
