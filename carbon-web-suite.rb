@@ -78,7 +78,7 @@ def send_data(node)
     )
   end
 
-  response
+  response.body
 end
 
 parsed_dir = File.join(HUNTER_DIR, '/var/parsed')
@@ -108,6 +108,10 @@ get '/' do
 end
 
 get '/send-data' do
-  erb :send_data, :locals => {:response => send_data(nodes.first)}
+  responses = []
+  nodes.each do |node|
+    responses << send_data(node)
+  end
+  erb :send_data, :locals => {:responses => responses}
 end
 
