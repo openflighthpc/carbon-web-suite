@@ -59,10 +59,9 @@ end
 def send_data(node)
   response = leaderboard.post('/add-record') do |req|
     req.headers[:content_type] = 'application/json'
-    req.headers[:Authorization] = AUTH_TOKEN
     req.body = JSON.generate(
       {
-        "device_id": "matt_test_uuid",
+        "device_id": node.label,
         "platform": node.platform,
         "cpus": node.cpus.units,
         "cores_per_cpu": node.cpus.cores_per_cpu,
