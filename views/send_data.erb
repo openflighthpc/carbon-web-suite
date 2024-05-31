@@ -10,6 +10,6 @@ td {
 <h1>Thanks for sending your data</h1>
 
 <% nodes.each do |node| %>
-  <%= "#{node.label}: #{send_data(node, auth_token)} %>
+  <%= "#{node.label}: #{send_data(node, auth_token)}" %>
   <br>
 <% end %>
