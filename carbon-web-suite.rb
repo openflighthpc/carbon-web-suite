@@ -62,7 +62,7 @@ def send_data(node, auth_token)
     req.headers['Authorization'] = auth_token unless auth_token.to_s.empty?
     req.body = JSON.generate(
       {
-        "device_id": node.label,
+        "device_id": node.uuid,
         "platform": node.platform,
         "cpus": node.cpus.units,
         "cores_per_cpu": node.cpus.cores_per_cpu,
