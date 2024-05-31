@@ -26,7 +26,11 @@ Your cluster:
   </tr>
   <% nodes.each do |node| %>
     <tr>
-      <td><%= node.label %></td>
+      <td>
+        <a href="/node/<%= node.label %>">
+          <%= node.label %>
+        </a>
+      </td>
       <td><%= node.model %></td>
       <td><%= node.bios %></td>
       <td><%= node.cpus.units %></td>

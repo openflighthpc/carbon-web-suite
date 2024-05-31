@@ -1,0 +1,36 @@
+<style>
+table, th, td {
+  border:1px solid black;
+}
+td {
+  text-align: center;
+}
+</style>
+
+<h1>Welcome to Carbon Web-Suite</h1>
+
+Your node:
+
+<table>
+  <tr>
+    <th rowspan=2>Label</th>
+    <th rowspan=2>Model</th>
+    <th rowspan=2>BIOS Version</th>
+    <th rowspan=2>CPU Count</th>
+    <th colspan=3>Carbon Usage (per hour)</th>
+  </tr>
+  <tr>
+    <th>Min</th>
+    <th>Half</th>
+    <th>Max</th>
+  </tr>
+  <tr>
+    <td><%= node.label %></td>
+    <td><%= node.model %></td>
+    <td><%= node.bios %></td>
+    <td><%= node.cpus.units %></td>
+    <td><%= "#{carbon_for_load(node, 0)}g" %></td>
+    <td><%= "#{carbon_for_load(node, 50)}g" %></td>
+    <td><%= "#{carbon_for_load(node, 100)}g" %></td>
+  </tr>
+</table>

@@ -106,6 +106,12 @@ get '/' do
   erb :home, :locals => {:nodes => nodes, :ec => emission_conversions}
 end
 
+get '/node/:label' do
+  node = nodes.find { |node| node.label == params['label'] }
+
+  erb :node, :locals => {:node => node}
+end
+
 get '/send-data' do
   responses = []
   nodes.each do |node|
