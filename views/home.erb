@@ -41,17 +41,20 @@ Your cluster:
   <% end %>
 </table>
 
+Submit your data to the Carbon Leaderboard:
 <form action="/send-data" method="post">
-  Auth token: <input type="text" name="auth_token">
+  Auth token: <input type="text" name="auth_token" placeholder="(Leave blank to remain anonymous)">
   <input type="submit" value="submit">
 </form>
 
+<p>
 A year of running your cluster produces as much carbon as...
-
+<br>
 <%= "...#{ec[:driving]} miles driven by car." %>
-
+<br>
 <%= "...#{ec[:big_mac]} Big Macs made (or #{ec[:mcplant]} McPlants)." %>
-
+<br>
 <%= "...#{ec[:flight]} people flown from London to Hamburg." %>
-
+<br>
 <%= "...#{ec[:netflix]} hours of Netflix streamed." %>
+<p>
