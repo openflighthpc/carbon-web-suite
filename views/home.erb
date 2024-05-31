@@ -41,7 +41,10 @@ Your cluster:
   <% end %>
 </table>
 
-<a href="/send-data">Click here to upload your data to the leaderboard!</a>
+<form action="/send-data" method="post">
+  Auth token: <input type="text" name="auth_token">
+  <input type="submit" value="submit">
+</form>
 
 A year of running your cluster produces as much carbon as...
 

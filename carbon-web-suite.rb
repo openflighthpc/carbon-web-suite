@@ -56,9 +56,10 @@ def carbon_for_load(node, cpu_load)
   JSON.parse(response.body).dig(*%w[impacts gwp use value]) * 1000
 end
 
-def send_data(node)
+def send_data(node, auth_token)
   response = leaderboard.post('/add-record') do |req|
     req.headers[:content_type] = 'application/json'
+    req.headers['Authorization'] = auth_token
     req.body = JSON.generate(
       {
         "device_id": node.label,
@@ -112,11 +113,7 @@ get '/node/:label' do
   erb :node, :locals => {:node => node}
 end
 
-get '/send-data' do
-  responses = []
-  nodes.each do |node|
-    responses << send_data(node)
-  end
-  erb :send_data, :locals => {:responses => responses}
+post '/send-data' do
+  erb :send_data, :locals => {:nodes => nodes, :auth_token => params['auth_token']}
 end
 

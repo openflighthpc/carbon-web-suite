@@ -9,4 +9,7 @@ td {
 
 <h1>Thanks for sending your data</h1>
 
-<%= responses %>
+<% nodes.each do |node| %>
+  <%= "#{node.label}: #{send_data(node, auth_token)} %>
+  <br>
+<% end %>
