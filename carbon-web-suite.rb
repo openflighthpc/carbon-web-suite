@@ -59,7 +59,7 @@ end
 def send_data(node, auth_token)
   response = leaderboard.post('/add-record') do |req|
     req.headers[:content_type] = 'application/json'
-    req.headers['Authorization'] = auth_token
+    req.headers['Authorization'] = auth_token unless auth_token.to_s.empty?
     req.body = JSON.generate(
       {
         "device_id": node.label,
